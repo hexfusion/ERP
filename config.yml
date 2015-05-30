@@ -15,17 +15,27 @@ layout: "main"
 charset: "UTF-8"
 
 # template engine
-# simple: default and very basic template engine
-# template_toolkit: TT
+template: "template_flute"
 
-template: "simple"
+# session engine
+session: "DBIC"
+session_expires: "16 hours"
 
-# template: "template_toolkit"
-# engines:
-#   template_toolkit:
-#     start_tag: '[%'
-#     end_tag:   '%]'
 
-# For session support enable the following line and see Dancer::Session
-# session: "YAML"
+plugins:
+ DBIC:
+    default:
+      schema_class: Angler::Interchange6::Schema
+      user: root
+      options:
+        RaiseError: 1
+        PrintError: 1
+        mysql_enable_utf8: 1
+        on_connect_do: ["SET SQL_MODE = CONCAT('ANSI,TRADITIONAL', @@sql_mode)" ,"SET SQL_AUTO_IS_NULL = 0"]
+    qbpos:
+      schema_class: Angler::Erp::Schema
+      options:
+        RaiseError: 0
+        PrintError: 0
+        unsafe: 1
 
