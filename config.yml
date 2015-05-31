@@ -33,7 +33,7 @@ plugins:
         mysql_enable_utf8: 1
         on_connect_do: ["SET SQL_MODE = CONCAT('ANSI,TRADITIONAL', @@sql_mode)" ,"SET SQL_AUTO_IS_NULL = 0"]
     qbpos:
-      schema_class: Angler::Erp::Schema
+      schema_class: ERP::Schema
       options:
         RaiseError: 0
         PrintError: 0
