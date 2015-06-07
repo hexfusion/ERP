@@ -18,24 +18,23 @@ charset: "UTF-8"
 template: "template_flute"
 
 # session engine
-session: "DBIC"
+session: 'YAML'
 session_expires: "16 hours"
 
+logger: 'file'
 
 plugins:
- DBIC:
+  DBIC:
     default:
       schema_class: Angler::Interchange6::Schema
-      user: root
+      user: web1
       options:
         RaiseError: 1
         PrintError: 1
         mysql_enable_utf8: 1
         on_connect_do: ["SET SQL_MODE = CONCAT('ANSI,TRADITIONAL', @@sql_mode)" ,"SET SQL_AUTO_IS_NULL = 0"]
-    qbpos:
-      schema_class: ERP::Schema
-      options:
-        RaiseError: 0
-        PrintError: 0
-        unsafe: 1
+  Database:
+    connections:
+      erp:
+        dsn: "DBI:ODBC:Live"
 
