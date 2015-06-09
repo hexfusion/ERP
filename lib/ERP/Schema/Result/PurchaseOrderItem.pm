@@ -1,9 +1,9 @@
 use utf8;
-package QBPOS::Schema::Result::PurchaseOrderItem;
+package ERP::Schema::Result::PurchaseOrderItem;
 
 =head1 NAME
 
-QBPOS::Schema::Result::PurchaseOrderItem
+ERP::Schema::Result::PurchaseOrderItem
 
 =head1 DESCRIPTION
 

@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::Employee;
+package QBPOS::Schema::Result::Employee;
 
 =head1 NAME
 
-ERP::Schema::Result::Employee - Employee List Table
+QBPOS::Schema::Result::Employee - Employee List Table
 
 =cut
 

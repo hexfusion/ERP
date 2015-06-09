@@ -1,9 +1,13 @@
 use utf8;
-package ERP::Schema::Result::Voucher;
+package QBPOS::Schema::Result::VoucherItem;
 
 =head1 NAME
 
-ERP::Schema::Result::Voucher - Main Voucher Table
+QBPOS::Schema::Result::VoucherItem
+
+=head1 DESCRIPTION
+
+Provides line item detail for a voucher, contains all the information included in the Main Voucher Table
 
 =cut
 
@@ -12,18 +16,18 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<Voucher>
+=head1 TABLE: C<VoucherItem>
 
 =cut
 
-__PACKAGE__->table("Voucher");
+__PACKAGE__->table("VoucherItem");
 
 =head1 ACCESSORS
 
 =head2 txnid
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: [36,0]
 
 =head2 timecreated
@@ -236,17 +240,101 @@ __PACKAGE__->table("Voucher");
   is_nullable: 1
   size: [10,0]
 
+=head2 voucheritemseqno
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 voucheritemlistid
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: [36,0]
+
+=head2 voucheritemalu
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [20,0]
+
+=head2 voucheritemattribute
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [8,0]
+
+=head2 voucheritemcost
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [14,5]
+
+=head2 voucheritemdesc1
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [30,0]
+
+=head2 voucheritemdesc2
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [30,0]
+
+=head2 voucheritemextendedcost
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [14,5]
+
+=head2 voucheritemitemnumber
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 voucheritemqtyreceived
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [13,5]
+
+=head2 voucheritemserialnumber
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [25,0]
+
+=head2 voucheritemsize
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [8,0]
+
+=head2 voucheritemupc
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [18,0]
+
 =head2 fqsavetocache
 
   data_type: 'bit'
   is_nullable: 1
   size: [1,0]
 
+=head2 fqprimarykey
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: [110,0]
+
 =cut
 
 __PACKAGE__->add_columns(
   "txnid",
-  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
+  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
   "timecreated",
   { data_type => "timestamp", is_nullable => 1, size => [23, 3] },
   "timemodified",
@@ -317,20 +405,47 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [9, 0] },
   "workstation",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "voucheritemseqno",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "voucheritemlistid",
+  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
+  "voucheritemalu",
+  { data_type => "varchar", is_nullable => 1, size => [20, 0] },
+  "voucheritemattribute",
+  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
+  "voucheritemcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "voucheritemdesc1",
+  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+  "voucheritemdesc2",
+  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+  "voucheritemextendedcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "voucheritemitemnumber",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "voucheritemqtyreceived",
+  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
+  "voucheritemserialnumber",
+  { data_type => "varchar", is_nullable => 1, size => [25, 0] },
+  "voucheritemsize",
+  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
+  "voucheritemupc",
+  { data_type => "varchar", is_nullable => 1, size => [18, 0] },
   "fqsavetocache",
   { data_type => "bit", is_nullable => 1, size => [1, 0] },
+  "fqprimarykey",
+  { data_type => "varchar", is_nullable => 0, size => [110, 0] },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</txnid>
+=item * L</fqprimarykey>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("txnid");
-
+__PACKAGE__->set_primary_key("fqprimarykey");
 1;

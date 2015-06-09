@@ -3,7 +3,7 @@ package ERP::Schema::Result::Vendor;
 
 =head1 NAME
 
-Angler::Erp::Schema::Result::Vendor - Vendors List Table
+ERP::Schema::Result::Vendor - Vendors List Table
 
 =cut
 

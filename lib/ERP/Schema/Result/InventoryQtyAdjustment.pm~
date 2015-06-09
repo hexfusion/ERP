@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::InventoryCostAdjustmentItem;
+package QBPOS::Schema::Result::InventoryQtyAdjustment;
 
 =head1 NAME
 
-ERP::Schema::Result::InventoryCostAdjustmentItem - Insert Only Inventory Cost Adjustment Item Table
+QBPOS::Schema::Result::InventoryQtyAdjustment - Insert Only Inventory Qty Adjustment Item Table
 
 =cut
 
@@ -12,18 +12,18 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<InventoryCostAdjustmentItem>
+=head1 TABLE: C<InventoryQtyAdjustment>
 
 =cut
 
-__PACKAGE__->table("InventoryCostAdjustmentItem");
+__PACKAGE__->table("InventoryQtyAdjustment");
 
 =head1 ACCESSORS
 
 =head2 txnid
 
   data_type: 'varchar'
-  is_nullable: 1
+  is_nullable: 0
   size: [36,0]
 
 =head2 timecreated
@@ -80,17 +80,17 @@ __PACKAGE__->table("InventoryCostAdjustmentItem");
   is_nullable: 1
   size: [10,0]
 
-=head2 newcost
+=head2 newquantity
 
   data_type: 'decimal'
   is_nullable: 1
-  size: [14,5]
+  size: [13,5]
 
-=head2 oldcost
+=head2 oldquantity
 
   data_type: 'decimal'
   is_nullable: 1
-  size: [14,5]
+  size: [13,5]
 
 =head2 quickbooksflag
 
@@ -134,53 +134,17 @@ __PACKAGE__->table("InventoryCostAdjustmentItem");
   is_nullable: 1
   size: [10,0]
 
-=head2 inventorycostadjustmentitemseqno
-
-  data_type: 'integer'
-  is_nullable: 1
-  size: [10,0]
-
-=head2 inventorycostadjustmentitemlistid
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [36,0]
-
-=head2 inventorycostadjustmentitemcostdifference
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 inventorycostadjustmentitemnewcost
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 inventorycostadjustmentitemoldcost
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
 =head2 fqsavetocache
 
   data_type: 'bit'
   is_nullable: 1
   size: [1,0]
 
-=head2 fqprimarykey
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: [110,0]
-
 =cut
 
 __PACKAGE__->add_columns(
   "txnid",
-  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
+  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
   "timecreated",
   { data_type => "timestamp", is_nullable => 1, size => [23, 3] },
   "timemodified",
@@ -199,10 +163,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [17, 0] },
   "itemscount",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "newcost",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "oldcost",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "newquantity",
+  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
+  "oldquantity",
+  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
   "quickbooksflag",
   { data_type => "varchar", is_nullable => 1, size => [17, 0] },
   "reason",
@@ -217,33 +181,9 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [6, 0] },
   "workstation",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "inventorycostadjustmentitemseqno",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "inventorycostadjustmentitemlistid",
-  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
-  "inventorycostadjustmentitemcostdifference",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "inventorycostadjustmentitemnewcost",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "inventorycostadjustmentitemoldcost",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
   "fqsavetocache",
   { data_type => "bit", is_nullable => 1, size => [1, 0] },
-  "fqprimarykey",
-  { data_type => "varchar", is_nullable => 0, size => [110, 0] },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</fqprimarykey>
-
-=back
-
-=cut
-
-__PACKAGE__->set_primary_key("fqprimarykey");
 
 
 1;

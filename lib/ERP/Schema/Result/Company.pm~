@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::Company;
+package QBPOS::Schema::Result::Company;
 
 =head1 NAME
 
-ERP::Schema::Result::Company - Company Information Table
+QBPOS::Schema::Result::Company - Company Information Table
 
 =cut
 

@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::PurchaseOrder;
+package QBPOS::Schema::Result::PurchaseOrder;
 
 =head1 NAME
 
-ERP::Schema::Result::PurchaseOrder - Main Purchase Order Table
+QBPOS::Schema::Result::PurchaseOrder - Main Purchase Order Table
 
 =cut
 

@@ -1,9 +1,9 @@
 use utf8;
-package QBPOS::Schema::Result::SalesOrder;
+package ERP::Schema::Result::SalesOrder;
 
 =head1 NAME
 
-QBPOS::Schema::Result::SalesOrder - Main Sales Order Table
+ERP::Schema::Result::SalesOrder - Main Sales Order Table
 
 =cut
 

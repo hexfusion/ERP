@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::SalesReceiptItem;
+package QBPOS::Schema::Result::SalesReceiptItem;
 
 =head1 NAME
 
-ERP::Schema::Result::SalesReceiptItem
+QBPOS::Schema::Result::SalesReceiptItem
 
 =head1 DESCRIPTION
 

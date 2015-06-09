@@ -1,9 +1,9 @@
 use utf8;
-package QBPOS::Schema::Result::InventoryQtyAdjustmentItem;
+package ERP::Schema::Result::InventoryQtyAdjustmentItem;
 
 =head1 NAME
 
-QBPOS::Schema::Result::InventoryQtyAdjustmentItem - Insert Only Inventory Qty Adjustment Item Table
+ERP::Schema::Result::InventoryQtyAdjustmentItem - Insert Only Inventory Qty Adjustment Item Table
 
 =cut
 

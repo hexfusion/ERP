@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::TransferSlipItem;
+package QBPOS::Schema::Result::TransferSlipItem;
 
 =head1 NAME
 
-ERP::Schema::Result::TransferSlipItem - Provides line item detail for a transfer slip
+QBPOS::Schema::Result::TransferSlipItem - Provides line item detail for a transfer slip
 
 =cut
 

@@ -1,13 +1,9 @@
 use utf8;
-package ERP::Schema::Result::SalesOrderItem;
+package QBPOS::Schema::Result::SalesOrder;
 
 =head1 NAME
 
-ERP::Schema::Result::SalesOrderItem
-
-=head1 DESCRIPTION
-
-Provides line item detail for a sales order; contains all the information included in the Main Sales Order Table
+QBPOS::Schema::Result::SalesOrder - Main Sales Order Table
 
 =cut
 
@@ -16,18 +12,18 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<SalesOrderItem>
+=head1 TABLE: C<SalesOrder>
 
 =cut
 
-__PACKAGE__->table("SalesOrderItem");
+__PACKAGE__->table("SalesOrder");
 
 =head1 ACCESSORS
 
 =head2 txnid
 
   data_type: 'varchar'
-  is_nullable: 1
+  is_nullable: 0
   size: [36,0]
 
 =head2 timecreated
@@ -44,7 +40,7 @@ __PACKAGE__->table("SalesOrderItem");
 
 =head2 associate
 
-  data_type: 'decimal'
+  data_type: 'varchar'
   is_nullable: 1
   size: [40,0]
 
@@ -336,167 +332,17 @@ __PACKAGE__->table("SalesOrderItem");
   is_nullable: 1
   size: [41,0]
 
-=head2 salesorderitemseqno
-
-  data_type: 'integer'
-  is_nullable: 1
-  size: [10,0]
-
-=head2 salesorderitemlistid
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: [36,0]
-
-=head2 salesorderitemtxnlineid
-
-  data_type: 'integer'
-  is_nullable: 1
-  size: [10,0]
-
-=head2 salesorderitemalu
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [20,0]
-
-=head2 salesorderitemassociate
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [40,0]
-
-=head2 salesorderitemattribute
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [8,0]
-
-=head2 salesorderitemcommission
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 salesorderitemdesc1
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [30,0]
-
-=head2 salesorderitemdesc2
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [30,0]
-
-=head2 salesorderitemdiscount
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [11,2]
-
-=head2 salesorderitemdiscountpercent
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [11,2]
-
-=head2 salesorderitemdiscounttype
-
-  data_type: -8
-  is_nullable: 1
-  size: [16,0]
-
-=head2 salesorderitemextendedprice
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 salesorderitemextendedtax
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 salesorderitemitemnumber
-
-  data_type: 'integer'
-  is_nullable: 1
-  size: [10,0]
-
-=head2 salesorderitemprice
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 salesorderitempricelevelnumber
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [1,0]
-
-=head2 salesorderitemqty
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [13,5]
-
-=head2 salesorderitemserialnumber
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [25,0]
-
-=head2 salesorderitemsize
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [8,0]
-
-=head2 salesorderitemtaxamount
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [14,5]
-
-=head2 salesorderitemtaxcode
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [36,0]
-
-=head2 salesorderitemtaxpercent
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [11,2]
-
-=head2 salesorderitemupc
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [18,0]
-
 =head2 fqsavetocache
 
   data_type: 'bit'
   is_nullable: 1
   size: [1,0]
 
-=head2 fqprimarykey
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: [110,0]
-
 =cut
 
 __PACKAGE__->add_columns(
   "txnid",
-  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
+  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
   "timecreated",
   { data_type => "timestamp", is_nullable => 1, size => [23, 3] },
   "timemodified",
@@ -599,71 +445,21 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [21, 0] },
   "shippinginformationstreet",
   { data_type => "varchar", is_nullable => 1, size => [41, 0] },
-  "salesorderitemseqno",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "salesorderitemlistid",
-  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
-  "salesorderitemtxnlineid",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "salesorderitemalu",
-  { data_type => "varchar", is_nullable => 1, size => [20, 0] },
-  "salesorderitemassociate",
-  { data_type => "varchar", is_nullable => 1, size => [40, 0] },
-  "salesorderitemattribute",
-  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
-  "salesorderitemcommission",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "salesorderitemdesc1",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
-  "salesorderitemdesc2",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
-  "salesorderitemdiscount",
-  { data_type => "decimal", is_nullable => 1, size => [11, 2] },
-  "salesorderitemdiscountpercent",
-  { data_type => "decimal", is_nullable => 1, size => [11, 2] },
-  "salesorderitemdiscounttype",
-  { data_type => "varchar", is_nullable => 1, size => [16, 0] },
-  "salesorderitemextendedprice",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "salesorderitemextendedtax",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "salesorderitemitemnumber",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "salesorderitemprice",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "salesorderitempricelevelnumber",
-  { data_type => "varchar", is_nullable => 1, size => [1, 0] },
-  "salesorderitemqty",
-  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
-  "salesorderitemserialnumber",
-  { data_type => "varchar", is_nullable => 1, size => [25, 0] },
-  "salesorderitemsize",
-  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
-  "salesorderitemtaxamount",
-  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
-  "salesorderitemtaxcode",
-  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
-  "salesorderitemtaxpercent",
-  { data_type => "decimal", is_nullable => 1, size => [11, 2] },
-  "salesorderitemupc",
-  { data_type => "varchar", is_nullable => 1, size => [18, 0] },
   "fqsavetocache",
   { data_type => "bit", is_nullable => 1, size => [1, 0] },
-  "fqprimarykey",
-  { data_type => "varchar", is_nullable => 0, size => [110, 0] },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</fqprimarykey>
+=item * L</txnid>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("fqprimarykey");
+__PACKAGE__->set_primary_key("txnid");
 
 
 1;

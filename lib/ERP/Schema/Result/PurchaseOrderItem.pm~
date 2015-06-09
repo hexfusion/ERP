@@ -1,9 +1,13 @@
 use utf8;
-package ERP::Schema::Result::PurchaseOrder;
+package QBPOS::Schema::Result::PurchaseOrderItem;
 
 =head1 NAME
 
-ERP::Schema::Result::PurchaseOrder - Main Purchase Order Table
+QBPOS::Schema::Result::PurchaseOrderItem
+
+=head1 DESCRIPTION
+
+Provides line item detail for a purchase order; contains all the information included in the Main Purchase Order Table
 
 =cut
 
@@ -12,18 +16,18 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<PurchaseOrder>
+=head1 TABLE: C<PurchaseOrderItem>
 
 =cut
 
-__PACKAGE__->table("PurchaseOrder");
+__PACKAGE__->table("PurchaseOrderItem");
 
 =head1 ACCESSORS
 
 =head2 txnid
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: [36,0]
 
 =head2 timecreated
@@ -200,29 +204,107 @@ __PACKAGE__->table("PurchaseOrder");
   is_nullable: 0
   size: [36,0]
 
+=head2 purchaseorderitemseqno
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 purchaseorderitemlistid
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [36,0]
+
+=head2 purchaseorderitemtxnlineid
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 purchaseorderitemalu
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [20,0]
+
+=head2 purchaseorderitemattribute
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [8,0]
+
+=head2 purchaseorderitemcost
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [14,5]
+
+=head2 purchaseorderitemdesc1
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [30,0]
+
+=head2 purchaseorderitemdesc2
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [30,0]
+
+=head2 purchaseorderitemextendedcost
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [14,5]
+
+=head2 purchaseorderitemitemnumber
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 purchaseorderitemqty
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [13,5]
+
+=head2 purchaseorderitemqtyreceived
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [13,5]
+
+=head2 purchaseorderitemsize
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [8,0]
+
+=head2 purchaseorderitemupc
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [18,0]
+
 =head2 fqsavetocache
 
   data_type: 'bit'
   is_nullable: 1
   size: [1,0]
 
-=head2 customfieldother1
+=head2 fqprimarykey
 
   data_type: 'varchar'
-  is_nullable: 1
-  size: [30,0]
-
-=head2 customfieldother2
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [30,0]
+  is_nullable: 0
+  size: [110,0]
 
 =cut
 
 __PACKAGE__->add_columns(
   "txnid",
-  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
+  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
   "timecreated",
   { data_type => "timestamp", is_nullable => 1, size => [23, 3] },
   "timemodified",
@@ -281,25 +363,51 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [3, 0] },
   "vendorlistid",
   { data_type => "varchar", is_nullable => 0, size => [36, 0] },
+  "purchaseorderitemseqno",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "purchaseorderitemlistid",
+  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
+  "purchaseorderitemtxnlineid",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "purchaseorderitemalu",
+  { data_type => "varchar", is_nullable => 1, size => [20, 0] },
+  "purchaseorderitemattribute",
+  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
+  "purchaseorderitemcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "purchaseorderitemdesc1",
+  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+  "purchaseorderitemdesc2",
+  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+  "purchaseorderitemextendedcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "purchaseorderitemitemnumber",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "purchaseorderitemqty",
+  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
+  "purchaseorderitemqtyreceived",
+  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
+  "purchaseorderitemsize",
+  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
+  "purchaseorderitemupc",
+  { data_type => "varchar", is_nullable => 1, size => [18, 0] },
   "fqsavetocache",
   { data_type => "bit", is_nullable => 1, size => [1, 0] },
-  "customfieldother1",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
-  "customfieldother2",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+  "fqprimarykey",
+  { data_type => "varchar", is_nullable => 0, size => [110, 0] },
 );
+
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</txnid>
+=item * L</fqprimarykey>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("txnid");
-
+__PACKAGE__->set_primary_key("fqprimarykey");
 
 1;

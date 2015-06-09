@@ -1,9 +1,9 @@
 use utf8;
-package QBPOS::Schema::Result::TransferSlip;
+package ERP::Schema::Result::TransferSlip;
 
 =head1 NAME
 
-QBPOS::Schema::Result::TransferSlip - Main Transfer Slip Table
+ERP::Schema::Result::TransferSlip - Main Transfer Slip Table
 
 =cut
 

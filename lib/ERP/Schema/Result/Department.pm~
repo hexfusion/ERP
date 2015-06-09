@@ -3,7 +3,7 @@ package ERP::Schema::Result::Department;
 
 =head1 NAME
 
-ERP::Schema::Result::Department - Department List Table
+Angler::Erp::Schema::Result::Department - Department List Table
 
 =cut
 

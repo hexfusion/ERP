@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::CustomField;
+package QBPOS::Schema::Result::CustomField;
 
 =head1 NAME
 
-ERP::Schema::Result::CustomField - Insert Only Custom Field Table
+QBPOS::Schema::Result::CustomField - Insert Only Custom Field Table
 
 =cut
 

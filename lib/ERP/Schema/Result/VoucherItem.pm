@@ -1,9 +1,9 @@
 use utf8;
-package QBPOS::Schema::Result::VoucherItem;
+package ERP::Schema::Result::VoucherItem;
 
 =head1 NAME
 
-QBPOS::Schema::Result::VoucherItem
+ERP::Schema::Result::VoucherItem
 
 =head1 DESCRIPTION
 

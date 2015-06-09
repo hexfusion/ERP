@@ -1,9 +1,9 @@
 use utf8;
-package ERP::Schema::Result::TransferSlipItem;
+package QBPOS::Schema::Result::InventoryCostAdjustmentItem;
 
 =head1 NAME
 
-ERP::Schema::Result::TransferSlipItem - Provides line item detail for a transfer slip
+QBPOS::Schema::Result::InventoryCostAdjustmentItem - Insert Only Inventory Cost Adjustment Item Table
 
 =cut
 
@@ -12,11 +12,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<TransferSlipItem>
+=head1 TABLE: C<InventoryCostAdjustmentItem>
 
 =cut
 
-__PACKAGE__->table("TransferSlipItem");
+__PACKAGE__->table("InventoryCostAdjustmentItem");
 
 =head1 ACCESSORS
 
@@ -44,29 +44,17 @@ __PACKAGE__->table("TransferSlipItem");
   is_nullable: 1
   size: [40,0]
 
-=head2 carrier
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [15,0]
-
 =head2 comments
 
   data_type: 'varchar'
   is_nullable: 1
   size: [300,0]
 
-=head2 freight
+=head2 costdifference
 
   data_type: 'decimal'
   is_nullable: 1
-  size: [11,2]
-
-=head2 fromstorenumber
-
-  data_type: 'integer'
-  is_nullable: 1
-  size: [10,0]
+  size: [14,5]
 
 =head2 historydocstatus
 
@@ -74,7 +62,13 @@ __PACKAGE__->table("TransferSlipItem");
   is_nullable: 1
   size: [9,0]
 
-=head2 quickbooksflag
+=head2 inventoryadjustmentnumber
+
+  data_type: 'integer'
+  is_nullable: 1
+  size: [10,0]
+
+=head2 inventoryadjustmentsource
 
   data_type: 'varchar'
   is_nullable: 1
@@ -86,41 +80,41 @@ __PACKAGE__->table("TransferSlipItem");
   is_nullable: 1
   size: [10,0]
 
-=head2 slipeta
+=head2 newcost
 
-  data_type: 'date'
+  data_type: 'decimal'
   is_nullable: 1
-  size: [10,0]
+  size: [14,5]
 
-=head2 slipnumber
+=head2 oldcost
 
-  data_type: 'integer'
+  data_type: 'decimal'
   is_nullable: 1
-  size: [10,0]
+  size: [14,5]
+
+=head2 quickbooksflag
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [17,0]
+
+=head2 reason
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: [8,0]
 
 =head2 storeexchangestatus
 
   data_type: 'varchar'
   is_nullable: 1
-  size: [12,0]
+  size: [17,0]
 
-=head2 tostorenumber
+=head2 storenumber
 
   data_type: 'integer'
   is_nullable: 1
   size: [10,0]
-
-=head2 totalcost
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [11,2]
-
-=head2 totalqty
-
-  data_type: 'decimal'
-  is_nullable: 1
-  size: [13,5]
 
 =head2 txndate
 
@@ -140,29 +134,35 @@ __PACKAGE__->table("TransferSlipItem");
   is_nullable: 1
   size: [10,0]
 
-=head2 transferslipitemseqno
+=head2 inventorycostadjustmentitemseqno
 
   data_type: 'integer'
   is_nullable: 1
   size: [10,0]
 
-=head2 transferslipitemlistid
+=head2 inventorycostadjustmentitemlistid
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: [36,0]
 
-=head2 transferslipitemqty
+=head2 inventorycostadjustmentitemcostdifference
 
   data_type: 'decimal'
   is_nullable: 1
-  size: [13,5]
+  size: [14,5]
 
-=head2 transferslipitemserialnumber
+=head2 inventorycostadjustmentitemnewcost
 
-  data_type: 'varchar'
+  data_type: 'decimal'
   is_nullable: 1
-  size: [25,0]
+  size: [14,5]
+
+=head2 inventorycostadjustmentitemoldcost
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [14,5]
 
 =head2 fqsavetocache
 
@@ -187,46 +187,46 @@ __PACKAGE__->add_columns(
   { data_type => "timestamp", is_nullable => 1, size => [23, 3] },
   "associate",
   { data_type => "varchar", is_nullable => 1, size => [40, 0] },
-  "carrier",
-  { data_type => "varchar", is_nullable => 1, size => [15, 0] },
   "comments",
   { data_type => "varchar", is_nullable => 1, size => [300, 0] },
-  "freight",
-  { data_type => "decimal", is_nullable => 1, size => [11, 2] },
-  "fromstorenumber",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "costdifference",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
   "historydocstatus",
   { data_type => "varchar", is_nullable => 1, size => [9, 0] },
-  "quickbooksflag",
+  "inventoryadjustmentnumber",
+  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "inventoryadjustmentsource",
   { data_type => "varchar", is_nullable => 1, size => [17, 0] },
   "itemscount",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "slipeta",
-  { data_type => "date", is_nullable => 1, size => [10, 0] },
-  "slipnumber",
-  { data_type => "integer", is_nullable => 1, size => [10, 0] },
+  "newcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "oldcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "quickbooksflag",
+  { data_type => "varchar", is_nullable => 1, size => [17, 0] },
+  "reason",
+  { data_type => "varchar", is_nullable => 1, size => [8, 0] },
   "storeexchangestatus",
-  { data_type => "varchar", is_nullable => 1, size => [12, 0] },
-  "tostorenumber",
+  { data_type => "varchar", is_nullable => 1, size => [17, 0] },
+  "storenumber",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "totalcost",
-  { data_type => "decimal", is_nullable => 1, size => [11, 2] },
-  "totalqty",
-  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
   "txndate",
   { data_type => "date", is_nullable => 1, size => [10, 0] },
   "txnstate",
   { data_type => "varchar", is_nullable => 1, size => [6, 0] },
   "workstation",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "transferslipitemseqno",
+  "inventorycostadjustmentitemseqno",
   { data_type => "integer", is_nullable => 1, size => [10, 0] },
-  "transferslipitemlistid",
-  { data_type => "varchar", is_nullable => 0, size => [36, 0] },
-  "transferslipitemqty",
-  { data_type => "decimal", is_nullable => 1, size => [13, 5] },
-  "transferslipitemserialnumber",
-  { data_type => "varchar", is_nullable => 1, size => [25, 0] },
+  "inventorycostadjustmentitemlistid",
+  { data_type => "varchar", is_nullable => 1, size => [36, 0] },
+  "inventorycostadjustmentitemcostdifference",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "inventorycostadjustmentitemnewcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
+  "inventorycostadjustmentitemoldcost",
+  { data_type => "decimal", is_nullable => 1, size => [14, 5] },
   "fqsavetocache",
   { data_type => "bit", is_nullable => 1, size => [1, 0] },
   "fqprimarykey",
