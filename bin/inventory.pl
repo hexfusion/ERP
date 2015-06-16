@@ -44,7 +44,10 @@ my $inventory_sync = ERP::Sync::Inventory->new(
 );
 
 $inventory_sync->clear if $clear;
-$inventory_sync->run;
+my $records = $inventory_sync->run;
+
+info "### TESTING ONLY ####" if $testing;
+info $records->{updated} , " were updated ", $records->{created}, " were created."
 
 __END__
 
