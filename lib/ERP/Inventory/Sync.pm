@@ -75,12 +75,12 @@ has export_dir => (
 
 sub run {
     my ($self) = @_;
-    my ($tokens, $created, $updated);
+    my ($tokens, $c, $u);
     my $schema_erp = $self->schema_erp;
     my $schema_angler = $self->schema_angler;
 
     # select all records from InventoryItem
-    my $inventory_item_rs = $schema->resultset('ItemInventory');
+    my $inventory_item_rs = $schema_erp->resultset('ItemInventory');
 
     while (my $inventory_item = $inventory_item_rs->next) {
         my $inventory;
@@ -140,6 +140,7 @@ Sets exisiting inventory for all Inventory records to 0
 =cut
 
 sub clear {
+    my ($self) = @_;
     my $schema_angler = $self->schema_angler;
     my $inventory =  $schema_angler->resultset('Inventory')->update({
                                                 quanitity => '0'
