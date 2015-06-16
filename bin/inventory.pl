@@ -21,11 +21,12 @@ use Data::Dumper::Concise;
 set logger => 'console';
 set log    => 'info';
 
-my ( $help, $export_dir);
+my ( $help, $testing, $export_dir, $clear );
 
 GetOptions(
-    "type=s" => \$type,
+    "testing" => \$testing,
     "export_dir=s" => \$export_dir,
+    "clear" => \$clear,
     "help" => \$help
 );
 
@@ -34,20 +35,16 @@ pod2usage(1) if $help;
 my $schema_erp = schema('dbic_erp');
 my $schema_angler = schema('default');
 
-# default type is test
-unless ($type) {
-    $type = 'test';
+my $inventory_sync = ERP::Sync::Inventory->new(
+    schema_erp => $schema_erp,
+    schema_angler => $schema_angler,
+    testing => $testing,
+    clear => $clear,
+    export_dir => $export_dir
+);
 
-    # run an inventory sync test only
-    my $inventory_sync = ERP::Sync::Inventory->new(
-        schema_erp => $schema_erp,
-        schema_angler => $schema_angler,
-        type => $type,
-        export_dir => $export_dir
-    );
-
-    $inventory_sync->run;
-}
+$inventory_sync->clear if $clear;
+$inventory_sync->run;
 
 __END__
 
@@ -60,8 +57,9 @@ inventory_sync.pl - Syncs ERP inventory with  Angler
 inventory_sync.pl [options]
 
  Options:
-  -t | --type             set inventory type. options are sync and test (defaults to 'test')
+  -t | --testing          set testing only (defaults to false)
   -e | --export_dir       set export directory for sync report
+  -c | --clear            clear all local inventory for all items before sync is ran.
   -h | --help             help message
 
 =cut

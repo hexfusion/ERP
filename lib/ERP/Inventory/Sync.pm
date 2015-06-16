@@ -15,13 +15,11 @@ This module provides inventory sync capabilities for the erp and angler schemas.
 
 =head1 SYNOPSIS
 
-    $type = 'test';
-
     # run an inventory sync test only
     my $inventory_sync = ERP::Sync::Inventory->new(
         schema_erp => $schema_erp,
         schema_angler => $schema_angler,
-        type => $type,
+        testing => 1,
         export_dir => $export_dir
     );
 
@@ -51,15 +49,14 @@ has schema_erp => (
     required => 1,
 );
 
-=head2 priority
+=head2 testing
 
 Returns sync type
 
 =cut
 
-has type => (
+has testing => (
     is => 'ro',
-    required => 1,
 );
 
 =head2 export_dir
@@ -78,7 +75,7 @@ has export_dir => (
 
 sub run {
     my ($self) = @_;
-    my ($created, $updated);
+    my ($tokens, $created, $updated);
     my $schema_erp = $self->schema_erp;
     my $schema_angler = $self->schema_angler;
 
@@ -86,6 +83,7 @@ sub run {
     my $inventory_item_rs = $schema->resultset('ItemInventory');
 
     while (my $inventory_item = $inventory_item_rs->next) {
+        my $inventory;
         my $product = $schema_angler->resultset('Product')->find(
             {-or => [
                         gtin => $inventory_item->UPC,
@@ -94,29 +92,44 @@ sub run {
            }
         );
 
-        $created = 0;
-        $updated = 0;
+        $c = 0; # created
+        $u = 0; # updated
 
         if ($product) {
-            my $inventory =  $schema_angler->resultset('Inventory')->update_or_new(
-                {
-                    sku => $product->sku,
-                    quanitity => $product->quantityonhand
-                },
-                { key => 'sku' }
-            );
+            unless ($self->testing) {
+                $inventory =  $schema_angler->resultset('Inventory')->update_or_new(
+                    {
+                        sku => $product->sku,
+                        quanitity => $product->quantityonhand
+                    },
+                    { key => 'sku' }
+                );
+            }
+            else {
+                 $inventory =  $schema_angler->resultset('Inventory')->find_or_new(
+                    {
+                        sku => $product->sku,
+                        quanitity => $product->quantityonhand
+                    },
+                    { key => 'sku' }
+                );
+            }
 
             if ($inventory->in_storage) {
-                $updated++;
+                $u++;
                 print "sku ", $product->sku, " was updated to quantity", $product->quantityonhand, "\n";
             }
             else {
-                $created++;
+                $c++;
                 print "sku ", $product->sku, " inventory was added \n";
-                $inventory->insert;
+                $inventory->insert unless $self->testing;
             }
         }
     }
+    $tokens->{created} = $c;
+    $tokens->{updated} = $u;
+
+    return $tokens
 
 };
 
