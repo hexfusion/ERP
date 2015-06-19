@@ -410,11 +410,11 @@ __PACKAGE__->table("ItemInventory");
   is_nullable: 1
   size: [36,0]
 
-=head2 customfieldcode
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: [30,0]
+#=head2 customfieldcode
+#
+#  data_type: 'varchar'
+#  is_nullable: 1
+#  size: [30,0]
 
 =head2 customfieldlife_cycle_code
 
@@ -573,16 +573,16 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => [18, 0] },
   "vendorinfo5vendorlistid",
   { data_type => "varchar", is_nullable => 1, size => [36, 0] },
-  "customfieldcode",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+#  "customfieldcode",
+#  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
   "customfieldlife_cycle_code",
   { data_type => "varchar", is_nullable => 1, size => [30, 0] },
   "customfieldmanf_sku",
   { data_type => "varchar", is_nullable => 1, size => [30, 0] },
   "customfieldrelease_season",
   { data_type => "varchar", is_nullable => 1, size => [30, 0] },
-  "customfieldsku",
-  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
+#  "customfieldsku",
+#  { data_type => "varchar", is_nullable => 1, size => [30, 0] },
 );
 
 =head1 PRIMARY KEY

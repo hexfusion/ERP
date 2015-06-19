@@ -11,8 +11,9 @@ use Moo;
 package main;
 
 use Dancer ':script';
-use Dancer::Plugin::DBIC;
+use lib '/home/sam/Apps/angler/applications/Angler/lib';
 use Dancer::Plugin::Interchange6;
+use Dancer::Plugin::DBIC;;
 use ERP::Inventory::Sync;
 use Try::Tiny;
 use Getopt::Long;
@@ -35,7 +36,7 @@ pod2usage(1) if $help;
 my $schema_erp = schema('dbic_erp');
 my $schema_angler = schema('default');
 
-my $inventory_sync = ERP::Sync::Inventory->new(
+my $inventory_sync = ERP::Inventory::Sync->new(
     schema_erp => $schema_erp,
     schema_angler => $schema_angler,
     testing => $testing,

@@ -83,14 +83,28 @@ sub run {
     my $inventory_item_rs = $schema_erp->resultset('ItemInventory');
 
     while (my $inventory_item = $inventory_item_rs->next) {
-        my $inventory;
-        my $product = $schema_angler->resultset('Product')->find(
-            {-or => [
-                        gtin => $inventory_item->UPC,
-                        manufacturer_sku =>  $inventory_item->alu
-                    ]
-           }
-        );
+        my ($inventory, $query, $product);
+        my $gtin = $inventory_item->upc;
+        my $msku = $inventory_item->alu;
+
+        if ( defined $gtin ) {
+            $query = { gtin => $gtin };
+        }
+
+        if ( defined $msku ) {
+            if ( $query ) {
+                $query = { -or => [
+                                      $query, { manufacturer_sku => $msku }
+                                  ]
+                         }
+            }
+            else {
+                $query = { manufacturer_sku => $msku }
+            }
+        }
+#        print "skipping item ", $ unless $query;
+        $product =  
+            $schema_angler->resultset('Product')->search( $query, { rows => 1 } )->single if $query;
 
         $c = 0; # created
         $u = 0; # updated
@@ -100,24 +114,22 @@ sub run {
                 $inventory =  $schema_angler->resultset('Inventory')->update_or_new(
                     {
                         sku => $product->sku,
-                        quanitity => $product->quantityonhand
+                        quantity => $inventory_item->quantityonhand
                     },
-                    { key => 'sku' }
                 );
             }
             else {
                  $inventory =  $schema_angler->resultset('Inventory')->find_or_new(
                     {
                         sku => $product->sku,
-                        quanitity => $product->quantityonhand
+                        quantity => $inventory_item->quantityonhand
                     },
-                    { key => 'sku' }
                 );
             }
 
             if ($inventory->in_storage) {
                 $u++;
-                print "sku ", $product->sku, " was updated to quantity", $product->quantityonhand, "\n";
+                print "sku ", $product->sku, " was updated to quantity", $inventory_item->quantityonhand, "\n";
             }
             else {
                 $c++;
@@ -126,6 +138,7 @@ sub run {
             }
         }
     }
+
     $tokens->{created} = $c;
     $tokens->{updated} = $u;
 
@@ -143,7 +156,7 @@ sub clear {
     my ($self) = @_;
     my $schema_angler = $self->schema_angler;
     my $inventory =  $schema_angler->resultset('Inventory')->update({
-                                                quanitity => '0'
+                                                quantity => '0'
                                             });
 }
 
