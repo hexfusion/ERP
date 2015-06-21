@@ -71,11 +71,43 @@ foreach my $col ( $col_min .. $col_max ) {
     }
 }
 
-   my $vendor_rs = $schema->resultset('Vendor');
+my @vendor_list;
 
-   my ( $purchase_order_created, $sales_order_created );
+# define vendors
+foreach my $row ( $row_min + 1 .. $row_max ) {
+    my $vendor_name;
+    my $vendor_name_col = $worksheet->get_cell( $row, $vendor_name_header );
 
-   while (my $vendor = $vendor_rs->next) {
+    if ( defined  $vendor_name_col ) {
+        $vendor_name = $vendor_name_col->value;
+        push @vendors, $vendor_name;
+    }
+    else {
+        print "WARNING NO Vendor Name Found \n ";
+    }
+}
+# make unique
+@vendor_list = uniq @vendor_list;
+
+my $vendor_rs = $schema->resultset('Vendor');
+my $product_rs = $schema->resultset('ItemInventory');
+
+my %product;
+my %vendor;
+
+# create a hash of all the data we need so we don't have to search it again
+while (my $item = $product_rs->next) {
+    $product{$item->itemnumber}= { listid => $item->listid };
+}    
+
+# create a hash of all the data we need so we don't have to search it again
+while (my $manufacturer = $vendor_rs->next) {
+    $vendor{$manufacturer->companyname}= { listid => $manufacturer->listid };
+}
+
+my ( $purchase_order_created, $sales_order_created );
+
+foreach (@vendor_list) {
     foreach my $row ( $row_min + 1 .. $row_max ) {
         my ( $item_num, $vendor_name, $expected, $counted );
         my $item_num_col = $worksheet->get_cell( $row, $item_num_header);
@@ -97,11 +129,10 @@ foreach my $col ( $col_min .. $col_max ) {
         }
 
         # check if the vendor in loop is the same as the vendor excel record
-        if ( $vendor->companyname eq $vendor_name ) {
+        if ( $vendor{$_} eq $vendor_name ) {
             my $differnce = ( $expected - $counted ); 
-            my $vendor_listid =  $vendor->listid;
-            my $product = $schema->resultset('ItemInventory')->find({ itemnumber =>  $item_num });
-            die "product not found in system " unless $product;
+            my $vendor_listid =  $vendor{$_}->{listid};
+            my $product_listid = $product{$item_num}->{listid};
 
             # if difference is negative we need to create a purchase order
             if ($differnce < '0') {
@@ -137,7 +168,7 @@ foreach my $col ( $col_min .. $col_max ) {
                     purchaseorderitemcost => '0',
                     purchaseorderitemqty => '0',
                     fqsavetocache => 0,
-                    vendorlistid => '79681556619165953' # west branch angler
+                    vendorlistid => '7909681556619165953' # west branch angler
        });
     }
 
