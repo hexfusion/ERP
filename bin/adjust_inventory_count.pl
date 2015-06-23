@@ -15,6 +15,7 @@ use Spreadsheet::ParseXLSX;
 use Try::Tiny;
 use URI::Escape;
 use Data::Dumper::Concise;
+use List::MoreUtils qw(uniq);
 
 set logger => 'console';
 set log    => 'info';
@@ -54,10 +55,7 @@ my $header_col = '6';
 foreach my $col ( $col_min .. $col_max ) {
     my $value = $worksheet->get_cell( $row_min, $col )->value;
 
-    print "Value" , $value, "\n";
-
     if ( $value eq 'Item #' ) {
-       print "found Item #";
        $item_num_header = $col;
     }
     elsif ( $value eq 'Vendor Name' ) {
@@ -80,7 +78,7 @@ foreach my $row ( $row_min + 1 .. $row_max ) {
 
     if ( defined  $vendor_name_col ) {
         $vendor_name = $vendor_name_col->value;
-        push @vendors, $vendor_name;
+        push @vendor_list, $vendor_name;
     }
     else {
         print "WARNING NO Vendor Name Found \n ";
@@ -101,18 +99,19 @@ while (my $item = $product_rs->next) {
 }    
 
 # create a hash of all the data we need so we don't have to search it again
-while (my $manufacturer = $vendor_rs->next) {
-    $vendor{$manufacturer->companyname}= { listid => $manufacturer->listid };
+while (my $manf = $vendor_rs->next) {
+    $vendor{$manf->companyname}= { listid => $manf->listid };
 }
 
 my ( $purchase_order_created, $sales_order_created );
 
-foreach (@vendor_list) {
+foreach my $record (@vendor_list) {
     foreach my $row ( $row_min + 1 .. $row_max ) {
-        my ( $item_num, $vendor_name, $expected, $counted );
-        my $item_num_col = $worksheet->get_cell( $row, $item_num_header);
+   	my ( $item_num, $vendor_name, $expected, $counted );
+        my $row_next = ($row +1);
+	my $item_num_col = $worksheet->get_cell( $row, $item_num_header);
         my $vendor_name_col = $worksheet->get_cell( $row, $vendor_name_header );
-        my $expected_col = $worksheet->get_cell( $row, $expected_header );
+	my $expected_col = $worksheet->get_cell( $row, $expected_header );
         my $counted_col =  $worksheet->get_cell( $row, $counted_header );
 
         if ( defined  $item_num_col ) {
@@ -129,57 +128,54 @@ foreach (@vendor_list) {
         }
 
         # check if the vendor in loop is the same as the vendor excel record
-        if ( $vendor{$_} eq $vendor_name ) {
-            my $differnce = ( $expected - $counted ); 
-            my $vendor_listid =  $vendor{$_}->{listid};
+        if ( $record eq $vendor_name ) {
+            my $save_to_cache;
+	    my $vendor_next;
+
+	    unless ($row == $row_max) {
+                $vendor_next = $worksheet->get_cell( $row_next, $vendor_name_header )->value;
+            }
+
+	    if ( ($row == $row_max) or ($vendor_next ne $vendor_name) ) {
+                $save_to_cache = '0';
+            }
+                
+	    else {
+                $save_to_cache = '1';
+            }
+
+    	    my $differnce = ( $expected - $counted ); 
+            my $vendor_listid =  $vendor{$record}->{listid};
             my $product_listid = $product{$item_num}->{listid};
 
             # if difference is negative we need to create a purchase order
             if ($differnce < '0') {
                 $purchase_order_created = '1';
 
-                # create purchse order lines
-                my $purchase_order = $schema->resultset('PurchaseOrderItem')->create({
-                    purchaseorderitemlistid => $product->listid,
-                    purchaseorderitemcost => '0',
-                    purchaseorderitemqty => $differnce,
-                    fqsavetocache => 1,
-                    vendorlistid => $vendor_listid 
-                });
+		print "record = ", $record , "listid ", $vendor{$record}->{listid};	
+
+		# create purchse order lines
+		my $purchase_order = $schema->resultset('PurchaseOrderItem')->create({
+                        purchaseorderitemlistid => $product_listid,
+                        purchaseorderitemcost => '0',
+                        purchaseorderitemqty => $differnce,
+                        fqsavetocache => $save_to_cache,
+                        vendorlistid => $vendor_listid 
+                });	       
             }
             elsif ($differnce > '0') {
                 $sales_order_created = '1';
 
-                 # create sales order lines
+                # create sales order lines
                 my $sales_order = $schema->resultset('SalesOrderItem')->create({
-                    salesorderitemlistid => $product->listid,
+                    salesorderitemlistid => $product_listid,
                     salesorderitemprice => '0',
                     salesorderitemqty => $differnce,
-                    fqsavetocache => 1,
+                    fqsavetocache => $save_to_cache,
                     customerlistid => '-1615806974685966591' # default customer 'Inventory Sync'
                 });
             }
         }
-    }
-    # SO and PO need to be closed up fqsavetocache
-    if ($purchase_order_created) {
-        $schema->resultset('PurchaseOrderItem')->create({
-                    purchaseorderitemlistid => '-1615748958234177791',
-                    purchaseorderitemcost => '0',
-                    purchaseorderitemqty => '0',
-                    fqsavetocache => 0,
-                    vendorlistid => '7909681556619165953' # west branch angler
-       });
-    }
-
-    if ($sales_order_created) {
-        $schema->resultset('SamesOrderItem')->create({
-                    salesorderitemlistid => '-1615748958234177791',
-                    salesorderitemcost => '0',
-                    salesorderitemqty => '0',
-                    fqsavetocache => 0,
-                    customerlistid => '-1615806974685966591' # default customer 'Inventory Sync'
-       });
     }
 }
 
